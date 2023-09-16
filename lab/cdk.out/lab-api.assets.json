@@ -1,0 +1,19 @@
+{
+  "version": "34.0.0",
+  "files": {
+    "2b85b582e70bd88588964f338772bfb449ba4b74dc58cc326ad080e28edd5ff9": {
+      "source": {
+        "path": "lab-api.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "2b85b582e70bd88588964f338772bfb449ba4b74dc58cc326ad080e28edd5ff9.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

@@ -1,0 +1,6 @@
+{
+  "app": "tsx app.ts",
+  "watch": {
+    "include": ["app.ts", "stack.ts"]
+  }
+}
