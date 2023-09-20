@@ -1,7 +1,8 @@
 import { App, Stack, StackProps } from "aws-cdk-lib";
 import { AwsIntegration, Model, PassthroughBehavior, RestApi } from "aws-cdk-lib/aws-apigateway";
 import { Effect, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
-import { Chain, DefinitionBody, Pass, StateMachine, StateMachineType } from "aws-cdk-lib/aws-stepfunctions";
+import { LogGroup } from "aws-cdk-lib/aws-logs";
+import { Chain, DefinitionBody, LogLevel, Pass, StateMachine, StateMachineType } from "aws-cdk-lib/aws-stepfunctions";
 
 export const ApiStack = class ApiStack extends Stack {
   constructor(scope: App, id: string, props?: StackProps) {
@@ -11,6 +12,13 @@ export const ApiStack = class ApiStack extends Stack {
       definitionBody: DefinitionBody.fromChainable(
         Chain.start(new Pass(this, "Pass")),
       ),
+      logs: {
+        destination: new LogGroup(this, 'StateMachineLogs', {
+          logGroupName: `/aws/vendedlogs/states/state-machine`,
+        }),
+        includeExecutionData: true,
+        level: LogLevel.ALL,
+      },
       stateMachineType: StateMachineType.EXPRESS,
     });
 
