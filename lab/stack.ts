@@ -5,6 +5,9 @@ import { LogGroup } from "aws-cdk-lib/aws-logs";
 import { Chain, DefinitionBody, LogLevel, Pass, StateMachine, StateMachineType } from "aws-cdk-lib/aws-stepfunctions";
 
 export const ApiStack = class ApiStack extends Stack {
+  public apiUrl: string;
+  public stateMachineArn: string;
+
   constructor(scope: App, id: string, props?: StackProps) {
     super(scope, id, props);
 
@@ -14,7 +17,7 @@ export const ApiStack = class ApiStack extends Stack {
       ),
       logs: {
         destination: new LogGroup(this, 'StateMachineLogs', {
-          logGroupName: `/aws/vendedlogs/states/state-machine`,
+          logGroupName: `/aws/vendedlogs/states/state-machine-${+ new Date()}`,
         }),
         includeExecutionData: true,
         level: LogLevel.ALL,
@@ -22,7 +25,11 @@ export const ApiStack = class ApiStack extends Stack {
       stateMachineType: StateMachineType.EXPRESS,
     });
 
+    this.stateMachineArn = stateMachine.stateMachineArn;
+
     const api = new RestApi(this, "RestApi");
+
+    this.apiUrl = api.url;
 
     api.root.addMethod(
       'POST',
